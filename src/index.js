@@ -1,14 +1,9 @@
 import Task from "./components/Task";
+import Project from "./components/Project";
+import data from "./data.json";
 
-const t1 = new Task({
-  title: "Task 1",
-  desc: "this is a task",
-  priority: "Important",
-  notes: "none",
-  dueDate: "22/10/2024",
-  checkList: "",
-});
+const taskList = data.map((task) => new Task(task));
 
-t1.title = "new title";
+const p1 = new Project({ title: "Default", taskList: taskList });
 
-console.log(t1);
+console.log(p1.taskList[0]);
