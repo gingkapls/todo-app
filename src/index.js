@@ -7,16 +7,16 @@ import "./style.css";
 import { formatDistance, format, compareAsc, isSameDay } from "date-fns";
 
 const projectList = data.map((project) => new Project(project));
-const filter = TaskFilter;
-
 const today = document.querySelector(".today-container");
 const rest = document.querySelector(".rest-container");
 const notes = document.querySelector(".notes");
+const projectContainer = document.querySelector(".project-list");
 
 const render = new DOMRender({
   todayContainer: today,
   restContainer: rest,
   noteContainer: notes,
+  projectListContainer: projectContainer,
 });
 
 render.displayTodayTasks({ project: projectList[0] });
@@ -25,6 +25,8 @@ render.displayRestTasks({ project: projectList[0] });
 setTimeout(() => {
   render.displayTodayTasks({ project: projectList[1] });
   render.displayRestTasks({ project: projectList[1] });
+
+  render.displayProjectList({ projects: projectList });
   console.log("executed");
 }, 2000);
 
