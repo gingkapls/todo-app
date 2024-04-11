@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "css-loader": "^7.1.0",
+    "date-fns": "^3.6.0",
     "style-loader": "^4.0.0",
     "webpack-merge": "^5.10.0"
   }
