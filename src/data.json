@@ -1,38 +1,43 @@
 [
   {
-    "title": "Task 1",
-    "desc": "this is a task",
-    "priority": 0,
-    "notes": "none",
-    "dueDate": "22/10/2024",
-    "checkList": "",
-    "completed": false
-  },
-  {
-    "title": "Task 2",
-    "desc": "this is a task",
-    "priority": 0,
-    "notes": "none",
-    "dueDate": "22/10/2024",
-    "checkList": "",
-    "completed": false
-  },
-  {
-    "title": "Task 3",
-    "desc": "this is a task",
-    "priority": 0,
-    "notes": "none",
-    "dueDate": "22/10/2024",
-    "checkList": "",
-    "completed": false
-  },
-  {
-    "title": "Task 4",
-    "desc": "this is a task",
-    "priority": 0,
-    "notes": "none",
-    "dueDate": "22/10/2024",
-    "checkList": "",
-    "completed": false
+    "projectTitle": "Default",
+    "taskList": [
+      {
+        "title": "Task 1",
+        "desc": "this is a task",
+        "priority": 0,
+        "notes": "none",
+        "dueDate": "22/10/2024",
+        "checkList": "",
+        "completed": false
+      },
+      {
+        "title": "Task 2",
+        "desc": "this is a task",
+        "priority": 0,
+        "notes": "none",
+        "dueDate": "22/10/2024",
+        "checkList": "",
+        "completed": false
+      },
+      {
+        "title": "Task 3",
+        "desc": "this is a task",
+        "priority": 0,
+        "notes": "none",
+        "dueDate": "22/10/2024",
+        "checkList": "",
+        "completed": false
+      },
+      {
+        "title": "Task 4",
+        "desc": "this is a task",
+        "priority": 0,
+        "notes": "none",
+        "dueDate": "22/10/2024",
+        "checkList": "",
+        "completed": false
+      }
+    ]
   }
 ]

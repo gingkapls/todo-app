@@ -1,10 +1,7 @@
+import data from "./data.json";
 import Task from "./components/Task";
 import Project from "./components/Project";
-import data from "./data.json";
 
-const taskList = data.map((task) => new Task(task));
-const p1 = new Project({ title: "Default", taskList: taskList });
+const projectList = data.map((project) => new Project(project));
 
-console.log(p1.taskList[0]);
-// p1.taskList[0].toggle();
-console.log(p1.taskList[0]);
+console.log(projectList);

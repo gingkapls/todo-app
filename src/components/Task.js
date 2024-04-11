@@ -1,5 +1,3 @@
-import Priority from "./Priority";
-
 const Task = class {
   constructor({
     title,

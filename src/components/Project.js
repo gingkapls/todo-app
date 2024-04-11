@@ -1,5 +1,5 @@
 const Project = class {
-  constructor({ title, taskList }) {
+  constructor({ projectTitle, taskList }) {
     Object.assign(this, arguments[0]);
   }
 
