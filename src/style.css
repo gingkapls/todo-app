@@ -62,7 +62,7 @@ body {
 
 .due-date {
   display: flex;
-  width: 60px;
+  width: 85px;
   aspect-ratio: 1;
   text-align: center;
   align-items: center;
@@ -70,10 +70,12 @@ body {
 
 .task-list {
   display: flex;
-  margin-left: 60px;
+  flex-direction: column;
+  margin-left: 85px;
 }
 
 .task-list li {
+  margin: 8px 0px;
   padding: 4px 12px;
   width: 100%;
 }

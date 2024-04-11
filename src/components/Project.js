@@ -1,6 +1,7 @@
 const Project = class {
   constructor({ projectTitle, taskList }) {
-    Object.assign(this, arguments[0]);
+    this.projectTitle = projectTitle ?? "";
+    this.taskList = taskList ?? [];
   }
 
   getNumTasks = () => this.taskList.length;

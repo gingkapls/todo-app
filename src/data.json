@@ -3,7 +3,7 @@
     "projectTitle": "Default",
     "taskList": [
       {
-        "title": "Task 1",
+        "title": "Do dishes",
         "desc": "this is a task",
         "priority": 0,
         "notes": "none",
@@ -12,7 +12,7 @@
         "completed": false
       },
       {
-        "title": "Task 2",
+        "title": "Study TOP",
         "desc": "this is a task",
         "priority": 0,
         "notes": "none",
@@ -21,7 +21,7 @@
         "completed": false
       },
       {
-        "title": "Task 3",
+        "title": "Swim",
         "desc": "this is a task",
         "priority": 0,
         "notes": "none",
@@ -30,7 +30,7 @@
         "completed": false
       },
       {
-        "title": "Task 4",
+        "title": "Breathe",
         "desc": "this is a task",
         "priority": 0,
         "notes": "none",
