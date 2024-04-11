@@ -1,0 +1,79 @@
+* {
+  outline: 1px solid red;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  background-color: lightgray;
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  height: 100%;
+  width: min(220px, 30%);
+  padding: 20px;
+  background-color: lightblue;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-list li {
+  margin: 14px 0;
+}
+
+.project-list button {
+  width: 100%;
+  margin: 0;
+}
+
+.current-day {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.main-content {
+  display: flex;
+  width: 100%;
+}
+
+.today-container,
+.rest-container {
+  width: 50%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgreen;
+}
+
+.due-date {
+  display: flex;
+  width: 60px;
+  aspect-ratio: 1;
+  text-align: center;
+  align-items: center;
+}
+
+.task-list {
+  display: flex;
+  margin-left: 60px;
+}
+
+.task-list li {
+  padding: 4px 12px;
+  width: 100%;
+}
