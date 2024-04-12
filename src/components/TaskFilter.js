@@ -1,13 +1,11 @@
 import { isSameDay } from "date-fns";
 
 const TaskFilter = (() => {
-  const olderThan = ({ project, dueDate }) =>
-    project.taskList.filter((task) => task.dueDate < dueDate);
+  const olderThan = ({ taskList, dueDate }) =>
+    taskList.filter((task) => task.dueDate < dueDate);
 
-  const sameDay = ({ project, dueDate }) =>
-    project.taskList.filter((task) =>
-      isSameDay(new Date(task.dueDate), dueDate)
-    );
+  const sameDay = ({ taskList, dueDate }) =>
+    taskList.filter((task) => isSameDay(new Date(task.dueDate), dueDate));
 
   return {
     olderThan,

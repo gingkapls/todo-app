@@ -1,4 +1,5 @@
 import TaskFilter from "./TaskFilter";
+import DBHelper from "./DBHelper";
 import { format, constructFrom, addDays } from "date-fns";
 
 const DOMRender = class {
@@ -11,7 +12,18 @@ const DOMRender = class {
     Object.assign(this, arguments[0]);
   }
 
-  generateTodoListCard = ({ dueDate, project }) => {
+  getProject = () => DBHelper.getCurrentProject();
+  updateProject = ({ id }) => DBHelper.setCurrentProjectId({ id });
+
+  getProjectList = () => DBHelper.getProjectList();
+  getTaskList = () => DBHelper.getTaskList();
+  getTodayTaskList = () =>
+    TaskFilter.sameDay({
+      taskList: this.getTaskList(),
+      dueDate: new Date().getTime(),
+    });
+
+  generateTodoListCard = ({ dueDate }) => {
     const card = document.createElement("div");
     card.classList.add("card");
 
@@ -22,14 +34,15 @@ const DOMRender = class {
     const taskList = document.createElement("ul");
     taskList.classList.add("task-list");
 
-    TaskFilter.sameDay({ project: project, dueDate: dueDate }).forEach(
-      (task) => {
-        const item = document.createElement("li");
-        item.textContent = task.title;
+    TaskFilter.sameDay({
+      taskList: this.getTaskList(),
+      dueDate: dueDate,
+    }).forEach((task) => {
+      const item = document.createElement("li");
+      item.textContent = task.title;
 
-        taskList.appendChild(item);
-      }
-    );
+      taskList.appendChild(item);
+    });
 
     card.appendChild(date);
     card.appendChild(taskList);
@@ -37,36 +50,48 @@ const DOMRender = class {
     return card;
   };
 
-  displayTodayTasks = ({ project }) => {
+  #displayTodayTasks = () => {
     this.todayContainer.replaceChildren(
       this.generateTodoListCard({
         dueDate: new Date().getTime(),
-        project,
       })
     );
   };
 
-  displayRestTasks = ({ project }) => {
+  #displayRestTasks = () => {
     this.restContainer.replaceChildren(
       this.generateTodoListCard({
         dueDate: addDays(new Date().getTime(), 1),
-        project,
       }),
 
       this.generateTodoListCard({
         dueDate: addDays(new Date().getTime(), 2),
-        project,
       })
     );
   };
 
-  displayProjectList = ({ projects }) => {
+  displayProject = ({ id: id = 0 }) => {
+    this.updateProject({ id });
+    this.#displayTodayTasks();
+    this.#displayRestTasks();
+  };
+
+  displayProjectList = () => {
     const fragment = new DocumentFragment();
 
-    this.generateProjectList({ projects }).forEach((projectTitle) => {
+    this.getProjectList().forEach(({ id, projectTitle }) => {
       const li = document.createElement("li");
       const button = document.createElement("button");
       button.textContent = projectTitle;
+      button.dataset.id = id;
+
+      button.addEventListener("click", (event) => {
+        // + -> convert string to number because it breaks otherwise
+        // this.displayProject({ id: +event.currentTarget.dataset.id });
+
+        // This is better for security?
+        this.displayProject({ id });
+      });
 
       li.appendChild(button);
       fragment.appendChild(li);
@@ -74,9 +99,6 @@ const DOMRender = class {
 
     this.projectListContainer.replaceChildren(fragment);
   };
-
-  generateProjectList = ({ projects }) =>
-    projects.map((project) => project.projectTitle);
 
   /*
             <li><button>Default</button></li>
