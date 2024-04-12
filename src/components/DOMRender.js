@@ -10,6 +10,8 @@ const DOMRender = class {
     this.noteContainer = document.querySelector(".notes");
     this.projectListContainer = document.querySelector(".project-list");
 
+    this.displayProject({ id: 0 });
+    this.displayProjectList();
     this.addProjectEventListener();
     this.addTaskEventListener();
   }
@@ -49,7 +51,15 @@ const DOMRender = class {
     });
   };
 
-  generateTodoListCard = ({ dueDate }) => {
+  generateTodoCard = ({ task }) => {
+    const item = document.createElement("li");
+    item.classList.add("btn");
+    item.textContent = `${task.title}`;
+
+    return item;
+  };
+
+  generateTodoList = ({ dueDate }) => {
     const card = document.createElement("div");
     card.classList.add("card");
 
@@ -64,10 +74,7 @@ const DOMRender = class {
       taskList: this.getTaskList(),
       dueDate: dueDate,
     }).forEach((task) => {
-      const item = document.createElement("li");
-      item.classList.add("btn");
-      item.textContent = task.title;
-
+      const item = this.generateTodoCard({ task });
       taskList.appendChild(item);
     });
 
@@ -79,7 +86,7 @@ const DOMRender = class {
 
   #displayTodayTasks = () => {
     this.todayContainer.replaceChildren(
-      this.generateTodoListCard({
+      this.generateTodoList({
         dueDate: new Date().getTime(),
       })
     );
@@ -87,11 +94,11 @@ const DOMRender = class {
 
   #displayRestTasks = () => {
     this.restContainer.replaceChildren(
-      this.generateTodoListCard({
+      this.generateTodoList({
         dueDate: addDays(new Date().getTime(), 1),
       }),
 
-      this.generateTodoListCard({
+      this.generateTodoList({
         dueDate: addDays(new Date().getTime(), 2),
       })
     );
@@ -126,12 +133,6 @@ const DOMRender = class {
 
     this.projectListContainer.replaceChildren(fragment);
   };
-
-  /*
-            <li><button>Default</button></li>
-        <li><button>Grocery</button></li>
-
-  */
 };
 
 export default DOMRender;

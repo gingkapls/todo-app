@@ -8,14 +8,4 @@ import "./style.css";
 
 const render = new DOMRender();
 
-// render.changeCurrentProject({ project: projectList[0] });
-render.displayProject({ id: 0 });
-render.displayProjectList();
-
 console.log(DBHelper.getTaskList());
-
-console.log(DBHelper.getTaskList());
-
-// console.log(DBHelper.getProjectList());
-// console.log(DBHelper.getTaskList());
-// console.log(DBHelper.getCurrentProject());
