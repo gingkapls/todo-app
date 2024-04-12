@@ -5,7 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <dialog name="add-task"></dialog>
+    <dialog class="dialog-add-task">
+      <form class="form-new-task">
+        <table>
+          <tbody>
+            <tr>
+              <td><label for="title">Title:</label></td>
+              <td><input type="text" id="title" placeholder="Task title" /></td>
+            </tr>
+
+            <tr>
+              <td><label for="desc">description:</label></td>
+              <td>
+                <input type="text" id="desc" placeholder="task description" />
+              </td>
+            </tr>
+
+            <tr>
+              <td><label for="dueDate">Due Date:</label></td>
+              <td><input type="date" id="dueDate" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button id="btn-submit-task" type="button">Add task</button>
+      </form>
+    </dialog>
     <div class="sidebar">
       <h3 class="day current-day">Monday</h3>
       <button id="btn-add-task">Add Task</button>

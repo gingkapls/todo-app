@@ -8,8 +8,6 @@ const DBHelper = (({ JSONData }) => {
     return project;
   });
 
-  // console.log(data[0].taskList);
-
   const getProjectList = () =>
     data.map((project) => ({
       id: project.id,

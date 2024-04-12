@@ -9,6 +9,9 @@ const DOMRender = class {
     this.restContainer = document.querySelector(".rest-container");
     this.noteContainer = document.querySelector(".notes");
     this.projectListContainer = document.querySelector(".project-list");
+    this.dialogAddTask = document.querySelector(".dialog-add-task");
+
+    this.dialogAddTask.show();
 
     this.displayProject({ id: 0 });
     this.displayProjectList();

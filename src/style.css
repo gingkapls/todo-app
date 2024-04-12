@@ -79,3 +79,30 @@ body {
   padding: 4px 12px;
   width: 100%;
 }
+
+.dialog-add-task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: transparent;
+}
+
+.form-new-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: auto;
+  height: 220px;
+  border-radius: 12px;
+  padding: 10px 20px;
+}
+
+#btn-submit-task {
+  margin-top: 20px;
+  width: 40%;
+}
