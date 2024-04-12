@@ -1,15 +1,17 @@
 import TaskFilter from "./TaskFilter";
 import DBHelper from "./DBHelper";
+import Task from "./Task";
 import { format, constructFrom, addDays } from "date-fns";
 
 const DOMRender = class {
-  constructor({
-    todayContainer,
-    restContainer,
-    noteContainer,
-    projectListContainer,
-  }) {
-    Object.assign(this, arguments[0]);
+  constructor() {
+    this.todayContainer = document.querySelector(".today-container");
+    this.restContainer = document.querySelector(".rest-container");
+    this.noteContainer = document.querySelector(".notes");
+    this.projectListContainer = document.querySelector(".project-list");
+
+    this.addProjectEventListener();
+    this.addTaskEventListener();
   }
 
   getProject = () => DBHelper.getCurrentProject();
@@ -22,6 +24,30 @@ const DOMRender = class {
       taskList: this.getTaskList(),
       dueDate: new Date().getTime(),
     });
+
+  addProjectEventListener = () => {
+    const btn = document.querySelector("#btn-add-project");
+    btn.addEventListener("click", () => {
+      DBHelper.createProject({ projectTitle: "Test" });
+      this.displayProjectList();
+    });
+  };
+
+  addTaskEventListener = () => {
+    const btn = document.querySelector("#btn-add-task");
+    btn.addEventListener("click", () => {
+      DBHelper.addTask({
+        task: new Task({
+          title: "hello",
+          desc: "bye",
+          dueDate: new Date().getTime(),
+          completed: false,
+        }),
+      });
+
+      this.displayProject({ id: DBHelper.getCurrentProjectId() });
+    });
+  };
 
   generateTodoListCard = ({ dueDate }) => {
     const card = document.createElement("div");
@@ -39,6 +65,7 @@ const DOMRender = class {
       dueDate: dueDate,
     }).forEach((task) => {
       const item = document.createElement("li");
+      item.classList.add("btn");
       item.textContent = task.title;
 
       taskList.appendChild(item);
