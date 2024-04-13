@@ -1,7 +1,9 @@
+import { nanoid } from "nanoid";
+
 const Task = class {
   constructor({
-    projectId,
     id,
+    projectId,
     title,
     desc,
     dueDate,
@@ -10,6 +12,7 @@ const Task = class {
     completed = false,
   }) {
     Object.assign(this, arguments[0]);
+    this.id = id ?? nanoid();
   }
 
   toggle = () => (this.completed = !this.completed);

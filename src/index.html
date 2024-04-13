@@ -8,7 +8,7 @@
     <dialog class="dialog-add-task">
       <div class="flex-container">
         <form class="form-add-task" action="#">
-          <button id="btn-close">x</button>
+          <button id="btn-close" type="button">x</button>
           <table>
             <tbody>
               <tr>
@@ -23,6 +23,7 @@
                   />
                 </td>
               </tr>
+              <input type="number" id="taskId" name="taskId" hidden />
 
               <tr>
                 <td><label for="desc">Description</label></td>

@@ -20,6 +20,7 @@
   "dependencies": {
     "css-loader": "^7.1.0",
     "date-fns": "^3.6.0",
+    "nanoid": "^5.0.7",
     "style-loader": "^4.0.0",
     "webpack-merge": "^5.10.0"
   }

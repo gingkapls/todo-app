@@ -1,5 +1,6 @@
 import TaskFilter from "./TaskFilter";
 import DBHelper from "./DBHelper";
+import FormHelper from "./FormHelper";
 import Task from "./Task";
 import { format, constructFrom, addDays } from "date-fns";
 
@@ -10,14 +11,13 @@ const DOMRender = class {
     this.noteContainer = document.querySelector(".notes");
     this.projectListContainer = document.querySelector(".project-list");
     this.dialogAddTask = document.querySelector(".dialog-add-task");
-    this.formAddTask = document.querySelector(".form-add-task");
-
+    this.isAtHome = true;
     this.btnHome = document.querySelector("#btn-home");
 
     // this.dialogAddTask.show();
     // console.log(DBHelper.getAllTasks());
 
-    this.displayProject({ id: 0 });
+    this.displayProject({ id: "0" });
     this.displayProjectList();
     this.addProjectEventListener();
     this.addTaskEventListener();
@@ -44,17 +44,18 @@ const DOMRender = class {
   addTaskEventListener = () => {
     const btn = document.querySelector("#btn-add-task");
     btn.addEventListener("click", () => {
-      this.dialogAddTask.showModal();
+      FormHelper.showForm();
     });
   };
 
   addbtnHomeEventListener = () => {
-    this.btnHome.addEventListener("click", () => {
-      this.hideRestContainer();
-      this.todayContainer.replaceChildren(
-        this.generateTodoList({ dueDate: 0 })
-      );
-    });
+    this.btnHome.addEventListener("click", this.renderHome);
+  };
+
+  renderHome = () => {
+    this.isAtHome = true;
+    this.hideRestContainer();
+    this.todayContainer.replaceChildren(this.generateTodoList({ dueDate: 0 }));
   };
 
   hideRestContainer = () => (this.restContainer.style.visibility = "collapse");
@@ -65,69 +66,46 @@ const DOMRender = class {
     const btnsubmit = this.dialogAddTask.querySelector("#btn-submit-task");
     const btnClose = this.dialogAddTask.querySelector("#btn-close");
     btnClose.addEventListener("click", () => {
-      this.dialogAddTask.close();
+      // this.dialogAddTask.close();
+      FormHelper.closeForm();
     });
 
     btnsubmit.addEventListener("click", (event) => {
       event.preventDefault();
 
-      if (!this.validateAddTaskData()) {
+      if (!FormHelper.validateAddTaskData()) {
         alert("Required fields are empty!");
         return;
       }
 
-      const newTask = this.getAddTaskData();
-
+      const newTask = FormHelper.getAddTaskData();
       DBHelper.addTask({
         task: newTask,
-        taskIndex: DBHelper.getTaskList().length,
       });
 
-      console.log(DBHelper.getCurrentProject());
-      console.log(DBHelper.getCurrentProjectId());
-      console.log(DBHelper.getTaskList());
-      console.log(DBHelper.getAllTasks());
+      FormHelper.reset();
 
-      this.formAddTask.reset();
-      this.dialogAddTask.close();
-      this.displayProject({ id: DBHelper.getCurrentProjectId() });
+      // console.log(DBHelper.getCurrentProject());
+      // console.log(DBHelper.getCurrentProjectId());
+      // console.log(DBHelper.getTaskList());
+      // console.log(DBHelper.getAllTasks());
+
+      // this.formAddTask.reset();
+      // FormHelper.reset();
+      FormHelper.closeForm();
+
+      if (this.isAtHome) {
+        this.renderHome();
+      } else {
+        this.displayProject({ id: DBHelper.getCurrentProjectId() });
+      }
     });
-  };
-
-  getAddTaskData = () => {
-    const form = new FormData(this.formAddTask);
-    const newTask = new Task({
-      projectId: DBHelper.getCurrentProjectId(),
-      id: DBHelper.getTaskList().length,
-      title: form.get("title"),
-      desc: form.get("desc"),
-      dueDate: new Date(form.get("dueDate")).getTime() ?? new Date().getTime(),
-      completed: false,
-    });
-
-    return newTask;
-  };
-
-  editTaskData = (event) => {
-    const projectId = event.target.dataset.projectId;
-    const taskId = event.target.dataset.taskId;
-    this.dialogAddTask.showModal();
-    const form = new FormData(this.formAddTask);
-    console.log(projectId, taskId);
-    // const task = this.getTaskList()[index];
-    // form.set("title", task.title);
-  };
-
-  validateAddTaskData = () => {
-    const form = new FormData(this.formAddTask);
-    if (!form.get("title")) return false;
-    if (!form.get("dueDate")) return false;
-
-    return true;
   };
 
   generateTodoCard = ({ task }) => {
     const item = document.createElement("li");
+    item.dataset.projectId = DBHelper.getCurrentProjectId();
+    item.dataset.taskId = task.id;
 
     const check = document.createElement("input");
     check.setAttribute("type", "checkbox");
@@ -135,10 +113,8 @@ const DOMRender = class {
     item.classList.add("btn");
 
     const button = document.createElement("button");
-    button.dataset.projectId = DBHelper.getCurrentProjectId();
-    button.dataset.taskId = task.id;
     button.textContent = `${task.title}`;
-    button.addEventListener("click", this.editTaskData);
+    button.addEventListener("click", FormHelper.editTaskData);
     item.appendChild(button);
 
     return item;
@@ -207,7 +183,7 @@ const DOMRender = class {
     );
   };
 
-  displayProject = ({ id: id = 0 }) => {
+  displayProject = ({ id }) => {
     this.updateProject({ id });
     this.#displayTodayTasks();
     this.#displayRestTasks();
@@ -226,6 +202,7 @@ const DOMRender = class {
         // + -> convert string to number because it breaks otherwise
         // this.displayProject({ id: +event.currentTarget.dataset.id });
 
+        this.isAtHome = false;
         this.showRestContainer();
         // This is better for security?
         this.displayProject({ id });

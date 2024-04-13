@@ -5,6 +5,4 @@ import DBHelper from "./components/DBHelper";
 
 const render = new DOMRender();
 
-console.log(DBHelper.getProjectList());
-
 // console.log(DBHelper.getTaskList());

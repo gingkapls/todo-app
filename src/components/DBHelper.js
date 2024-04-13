@@ -26,13 +26,18 @@ const DBHelper = (({ JSONData }) => {
     });
   };
 
+  const getTask = ({ taskId }) => taskList.find((task) => task.id === taskId);
+
   const addTask = ({ task }) => {
-    let index = taskList.findIndex((taskItem) => taskItem.id === task.id);
+    let index = taskList.findIndex((taskItem) => taskItem.id == task.id);
     index = index === -1 ? taskList.length : index;
     taskList[index] = task;
 
+    sortTasks();
     return index;
   };
+
+  const sortTasks = () => taskList.sort((a, b) => a.dueDate - b.dueDate);
 
   const setProjectTitle = ({ projectId, projectTitle }) => {
     const index = projectList.findIndex((project) => project.id === projectId);
@@ -50,6 +55,7 @@ const DBHelper = (({ JSONData }) => {
 
   return {
     getProjectList,
+    getTask,
     setCurrentProjectId,
     setProjectTitle,
     getCurrentProjectId,
