@@ -1,86 +1,52 @@
-[
-  {
-    "id": 0,
-    "projectTitle": "Default",
-    "taskList": [
-      {
-        "title": "Do dishes",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Study TOP",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712947607699,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Swim",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712947607699,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Breathe",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      }
-    ]
-  },
-  {
-    "id": 1,
-    "projectTitle": "List 2",
-    "taskList": [
-      {
-        "title": "Do dishes",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Study TOP",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Swim",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      },
-      {
-        "title": "Breathe",
-        "desc": "this is a task",
-        "priority": 0,
-        "notes": "none",
-        "dueDate": 1712860253253,
-        "checkList": "",
-        "completed": false
-      }
-    ]
-  }
-]
+{
+  "projects": [
+    { "id": 0, "title": "Default" },
+    { "id": 1, "title": "Project 2" }
+  ],
+  "taskList": [
+    {
+      "projectId": 0,
+      "id": 0,
+      "title": "Do dishes",
+      "desc": "this is a task",
+      "priority": 0,
+      "notes": "none",
+      "dueDate": 1712860253253,
+      "checkList": "",
+      "completed": false
+    },
+    {
+      "projectId": 0,
+      "id": 1,
+      "title": "Swim",
+      "desc": "this is a task",
+      "priority": 0,
+      "notes": "none",
+      "dueDate": 1712947607699,
+      "checkList": "",
+      "completed": false
+    },
+    {
+      "projectId": 1,
+      "id": 2,
+      "title": "Study TOP",
+      "desc": "this is a task",
+      "priority": 0,
+      "notes": "none",
+      "dueDate": 1712860253253,
+      "checkList": "",
+      "completed": false
+    },
+    {
+      "projectId": 0,
+      "id": 3,
+      "title": "Breathe",
+      "desc": "this is a task",
+      "priority": 0,
+      "notes": "none",
+      "dueDate": 1712860253253,
+      "checkList": "",
+      "completed": false
+    }
+  ]
+}

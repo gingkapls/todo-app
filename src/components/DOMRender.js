@@ -15,7 +15,7 @@ const DOMRender = class {
     this.btnHome = document.querySelector("#btn-home");
 
     // this.dialogAddTask.show();
-    console.log(DBHelper.getAllTasks());
+    // console.log(DBHelper.getAllTasks());
 
     this.displayProject({ id: 0 });
     this.displayProjectList();
@@ -36,7 +36,7 @@ const DOMRender = class {
   addProjectEventListener = () => {
     const btn = document.querySelector("#btn-add-project");
     btn.addEventListener("click", () => {
-      DBHelper.createProject({ projectTitle: "Test" });
+      DBHelper.createProject({ title: "Test" });
       this.displayProjectList();
     });
   };
@@ -44,7 +44,7 @@ const DOMRender = class {
   addTaskEventListener = () => {
     const btn = document.querySelector("#btn-add-task");
     btn.addEventListener("click", () => {
-      this.dialogAddTask.show();
+      this.dialogAddTask.showModal();
     });
   };
 
@@ -63,6 +63,11 @@ const DOMRender = class {
 
   submitTaskEventListener = () => {
     const btnsubmit = this.dialogAddTask.querySelector("#btn-submit-task");
+    const btnClose = this.dialogAddTask.querySelector("#btn-close");
+    btnClose.addEventListener("click", () => {
+      this.dialogAddTask.close();
+    });
+
     btnsubmit.addEventListener("click", (event) => {
       event.preventDefault();
 
@@ -73,7 +78,16 @@ const DOMRender = class {
 
       const newTask = this.getAddTaskData();
 
-      DBHelper.addTask({ task: newTask });
+      DBHelper.addTask({
+        task: newTask,
+        taskIndex: DBHelper.getTaskList().length,
+      });
+
+      console.log(DBHelper.getCurrentProject());
+      console.log(DBHelper.getCurrentProjectId());
+      console.log(DBHelper.getTaskList());
+      console.log(DBHelper.getAllTasks());
+
       this.formAddTask.reset();
       this.dialogAddTask.close();
       this.displayProject({ id: DBHelper.getCurrentProjectId() });
@@ -83,6 +97,8 @@ const DOMRender = class {
   getAddTaskData = () => {
     const form = new FormData(this.formAddTask);
     const newTask = new Task({
+      projectId: DBHelper.getCurrentProjectId(),
+      id: DBHelper.getTaskList().length,
       title: form.get("title"),
       desc: form.get("desc"),
       dueDate: new Date(form.get("dueDate")).getTime() ?? new Date().getTime(),
@@ -90,6 +106,16 @@ const DOMRender = class {
     });
 
     return newTask;
+  };
+
+  editTaskData = (event) => {
+    const projectId = event.target.dataset.projectId;
+    const taskId = event.target.dataset.taskId;
+    this.dialogAddTask.showModal();
+    const form = new FormData(this.formAddTask);
+    console.log(projectId, taskId);
+    // const task = this.getTaskList()[index];
+    // form.set("title", task.title);
   };
 
   validateAddTaskData = () => {
@@ -102,8 +128,18 @@ const DOMRender = class {
 
   generateTodoCard = ({ task }) => {
     const item = document.createElement("li");
+
+    const check = document.createElement("input");
+    check.setAttribute("type", "checkbox");
+    item.appendChild(check);
     item.classList.add("btn");
-    item.textContent = `${task.title}`;
+
+    const button = document.createElement("button");
+    button.dataset.projectId = DBHelper.getCurrentProjectId();
+    button.dataset.taskId = task.id;
+    button.textContent = `${task.title}`;
+    button.addEventListener("click", this.editTaskData);
+    item.appendChild(button);
 
     return item;
   };
@@ -126,7 +162,7 @@ const DOMRender = class {
     let tasks;
 
     if (dueDate === 0) {
-      tasks = TaskFilter.archived({ taskList: this.getAllTasks() });
+      tasks = this.getAllTasks();
     } else {
       tasks = TaskFilter.sameDay({
         taskList: this.getTaskList(),
@@ -180,18 +216,18 @@ const DOMRender = class {
   displayProjectList = () => {
     const fragment = new DocumentFragment();
 
-    this.getProjectList().forEach(({ id, projectTitle }) => {
+    this.getProjectList().forEach(({ id, title }) => {
       const li = document.createElement("li");
       const button = document.createElement("button");
-      button.textContent = projectTitle;
+      button.textContent = title;
       button.dataset.id = id;
 
       button.addEventListener("click", (event) => {
         // + -> convert string to number because it breaks otherwise
         // this.displayProject({ id: +event.currentTarget.dataset.id });
 
-        // This is better for security?
         this.showRestContainer();
+        // This is better for security?
         this.displayProject({ id });
       });
 

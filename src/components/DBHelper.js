@@ -3,60 +3,55 @@ import Task from "./Task";
 
 const DBHelper = (({ JSONData }) => {
   // Convert JSON to POJOs
-  const data = JSONData.map((project) => {
-    project.taskList = project.taskList.map((task) => new Task(task));
-    return project;
-  });
+  const projectList = JSONData.projects.map((project) => project);
+  const taskList = JSONData.taskList.map((task) => new Task(task));
 
-  const getProjectList = () =>
-    data.map((project) => ({
-      id: project.id,
-      projectTitle: project.projectTitle,
-    }));
+  const getProjectList = () => projectList;
+
+  const getCurrentProjectId = () => currentProjectId;
 
   const setCurrentProjectId = ({ id }) => {
     currentProjectId = id;
     currentProject = getCurrentProject();
   };
 
-  const getCurrentProjectId = () => currentProjectId;
+  const getCurrentProject = () =>
+    projectList.find((project) => project.id === currentProjectId);
 
-  const getCurrentProjectIndex = () =>
-    data.findIndex((project) => project.id === getCurrentProjectId());
-
-  const createProject = ({ projectTitle }) => {
-    data.push({
-      id: data.length,
-      projectTitle: `Project ${data.length}`,
+  const createProject = ({ title }) => {
+    projectList.push({
+      id: projectList.length,
+      title: `${title} ${projectList.length}`,
       taskList: [],
     });
   };
 
   const addTask = ({ task }) => {
-    const index = getCurrentProjectIndex();
+    let index = taskList.findIndex((taskItem) => taskItem.id === task.id);
+    index = index === -1 ? taskList.length : index;
+    taskList[index] = task;
 
-    data[index].taskList.push(task);
+    return index;
   };
 
-  const setCurrentProjectTitle = ({ projectTitle }) => {
-    const index = (data[index].projectTitle = projectTitle);
+  const setProjectTitle = ({ projectId, projectTitle }) => {
+    const index = projectList.findIndex((project) => project.id === projectId);
+
+    projectList[index].title = projectTitle;
   };
 
-  const getCurrentProject = () =>
-    data.find((project) => project.id === currentProjectId);
+  const getTaskList = () =>
+    taskList.filter((task) => task.projectId === currentProjectId);
 
-  const getTaskList = () => currentProject.taskList;
+  const getAllTasks = () => taskList;
 
-  const getAllTasks = () =>
-    data.reduce((taskList, project) => taskList.concat(project.taskList), []);
-
-  let currentProjectId = data[0].id;
+  let currentProjectId = projectList[0].id;
   let currentProject = getCurrentProject();
 
   return {
     getProjectList,
     setCurrentProjectId,
-    setCurrentProjectTitle,
+    setProjectTitle,
     getCurrentProjectId,
     getCurrentProject,
     createProject,

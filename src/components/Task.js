@@ -1,5 +1,7 @@
 const Task = class {
   constructor({
+    projectId,
+    id,
     title,
     desc,
     dueDate,
