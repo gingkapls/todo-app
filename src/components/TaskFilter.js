@@ -7,11 +7,18 @@ const TaskFilter = (() => {
   const sameDay = ({ taskList, dueDate }) =>
     taskList.filter((task) => isSameDay(new Date(task.dueDate), dueDate));
 
-  const archived = ({ taskList }) => taskList.filter((task) => task.archived);
+  const today = ({ taskList }) =>
+    sameDay({ taskList, dueDate: new Date().getTime() });
+
+  const archived = ({ taskList }) =>
+    taskList.filter(
+      (task) => task.completed || task.dueDate < new Date().getTime()
+    );
 
   return {
     olderThan,
     sameDay,
+    today,
     archived,
   };
 })();

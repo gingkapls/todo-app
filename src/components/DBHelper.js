@@ -47,17 +47,22 @@ const DBHelper = (({ JSONData }) => {
 
   const getTaskList = () => currentProject.taskList;
 
+  const getAllTasks = () =>
+    data.reduce((taskList, project) => taskList.concat(project.taskList), []);
+
   let currentProjectId = data[0].id;
   let currentProject = getCurrentProject();
 
   return {
     getProjectList,
     setCurrentProjectId,
+    setCurrentProjectTitle,
     getCurrentProjectId,
     getCurrentProject,
     createProject,
     addTask,
     getTaskList,
+    getAllTasks,
   };
 
   //

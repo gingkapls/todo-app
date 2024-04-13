@@ -6,34 +6,52 @@
   </head>
   <body>
     <dialog class="dialog-add-task">
-      <form class="form-new-task">
-        <table>
-          <tbody>
-            <tr>
-              <td><label for="title">Title:</label></td>
-              <td><input type="text" id="title" placeholder="Task title" /></td>
-            </tr>
+      <div class="flex-container">
+        <form class="form-add-task" action="#">
+          <table>
+            <tbody>
+              <tr>
+                <td><label for="title">Title</label></td>
+                <td>
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Task title"
+                    required
+                  />
+                </td>
+              </tr>
 
-            <tr>
-              <td><label for="desc">description:</label></td>
-              <td>
-                <input type="text" id="desc" placeholder="task description" />
-              </td>
-            </tr>
+              <tr>
+                <td><label for="desc">Description</label></td>
+                <td>
+                  <input
+                    type="text"
+                    id="desc"
+                    name="desc"
+                    placeholder="Task description"
+                  />
+                </td>
+              </tr>
 
-            <tr>
-              <td><label for="dueDate">Due Date:</label></td>
-              <td><input type="date" id="dueDate" /></td>
-            </tr>
-          </tbody>
-        </table>
+              <tr>
+                <td><label for="dueDate">Due Date</label></td>
+                <td>
+                  <input type="date" id="dueDate" name="dueDate" required />
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-        <button id="btn-submit-task" type="button">Add task</button>
-      </form>
+          <button id="btn-submit-task" type="submit">Add task</button>
+        </form>
+      </div>
     </dialog>
     <div class="sidebar">
       <h3 class="day current-day">Monday</h3>
       <button id="btn-add-task">Add Task</button>
+      <button id="btn-home">Home</button>
       <ul class="project-list"></ul>
       <button id="btn-add-project">Add Project</button>
     </div>
