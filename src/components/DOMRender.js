@@ -2,7 +2,7 @@ import TaskFilter from "./TaskFilter";
 import DBHelper from "./DBHelper";
 import FormHelper from "./FormHelper";
 import Task from "./Task";
-import { format, constructFrom, addDays } from "date-fns";
+import { format, addDays } from "date-fns";
 
 const DOMRender = class {
   constructor() {
@@ -11,6 +11,9 @@ const DOMRender = class {
     this.noteContainer = document.querySelector(".notes");
     this.projectListContainer = document.querySelector(".project-list");
     this.dialogAddTask = document.querySelector(".dialog-add-task");
+    this.currentProjectTitleInput = document.querySelector(
+      ".current-project-title"
+    );
     this.isAtHome = true;
     this.btnHome = document.querySelector("#btn-home");
 
@@ -23,6 +26,7 @@ const DOMRender = class {
     this.addTaskEventListener();
     this.submitTaskEventListener();
     this.addbtnHomeEventListener();
+    this.addProjectTitleEventListener();
   }
 
   getProject = () => DBHelper.getCurrentProject();
@@ -37,6 +41,17 @@ const DOMRender = class {
     const btn = document.querySelector("#btn-add-project");
     btn.addEventListener("click", () => {
       DBHelper.createProject({ title: "Test" });
+      this.displayProjectList();
+    });
+  };
+
+  addProjectTitleEventListener = () => {
+    this.currentProjectTitleInput.addEventListener("change", (event) => {
+      const title = event.currentTarget.value;
+      DBHelper.setProjectTitle({
+        projectId: DBHelper.getCurrentProjectId(),
+        projectTitle: title,
+      });
       this.displayProjectList();
     });
   };
@@ -114,13 +129,21 @@ const DOMRender = class {
     const card = document.createElement("div");
     card.classList.add("card");
 
-    const date = document.createElement("h4");
-    if (dueDate === 0) {
-      date.textContent = format(new Date(), "dd MMMM");
-    } else {
-      date.textContent = format(new Date(dueDate), "dd MMMM");
-    }
-    date.classList.add("due-date");
+    const dateContainer = document.createElement("div");
+    const [month, date] = (
+      dueDate === 0
+        ? format(new Date(), "MMM dd")
+        : format(new Date(dueDate), "MMM dd")
+    ).split(" ");
+
+    const monthEl = document.createElement("h4");
+    monthEl.textContent = month;
+
+    const dateEl = document.createElement("h5");
+    dateEl.textContent = date;
+
+    dateContainer.classList.add("due-date");
+    dateContainer.replaceChildren(monthEl, dateEl);
 
     const taskList = document.createElement("ul");
     taskList.classList.add("task-list");
@@ -147,7 +170,7 @@ const DOMRender = class {
       taskList.appendChild(item);
     }
 
-    card.appendChild(date);
+    card.appendChild(dateContainer);
     card.appendChild(taskList);
 
     return card;
@@ -175,6 +198,7 @@ const DOMRender = class {
 
   displayProject = ({ id }) => {
     this.updateProject({ id });
+    this.currentProjectTitleInput.value = DBHelper.getCurrentProjectTitle();
     this.#displayTodayTasks();
     this.#displayRestTasks();
   };

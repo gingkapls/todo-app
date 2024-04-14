@@ -16,12 +16,14 @@ const FormHelper = (({ form, dialog, btnSubmit, btnClose }) => {
 
   const getAddTaskData = () => {
     const formData = getFormData();
-    console.log(formData.get("taskId"));
+    console.log("taskId", formData.get("taskId"));
+
     const newTask = new Task({
       id: formData.get("taskId") ? formData.get("taskId") : null,
       projectId: DBHelper.getCurrentProjectId(),
       title: formData.get("title"),
       desc: formData.get("desc"),
+      priority: Number(formData.get("priority")),
       dueDate:
         new Date(formData.get("dueDate")).getTime() ?? new Date().getTime(),
       completed: false,
@@ -31,14 +33,12 @@ const FormHelper = (({ form, dialog, btnSubmit, btnClose }) => {
   };
 
   const editTaskData = (event) => {
-    const projectId = event.currentTarget.parentNode.dataset.projectId;
-    // PESKY STRINGS OMG I SWEAR
     const taskId = event.currentTarget.parentNode.dataset.taskId;
+    console.log("task", taskId);
     const task = DBHelper.getTask({ taskId: taskId });
+    console.log("task", task);
 
     setFormData({ task });
-
-    console.log(task);
 
     showForm();
     // console.log(projectId, taskId);
@@ -50,6 +50,8 @@ const FormHelper = (({ form, dialog, btnSubmit, btnClose }) => {
     form.title.value = task.title;
     form.desc.value = task.desc;
     form.taskId.value = task.id;
+    console.log("formdata", form.taskId.value);
+    form.priority.value = task.priority;
     form.dueDate.value = format(new Date(task.dueDate), "yyyy-MM-dd");
   };
 

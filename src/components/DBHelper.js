@@ -1,4 +1,5 @@
 import JSONData from "../data.json";
+import { nanoid } from "nanoid";
 import Task from "./Task";
 
 const DBHelper = (({ JSONData }) => {
@@ -26,19 +27,21 @@ const DBHelper = (({ JSONData }) => {
 
   const getProjectList = () => projectList;
 
-  const getCurrentProjectId = () => currentProjectId;
-
   const setCurrentProjectId = ({ id }) => {
     currentProjectId = id;
     currentProject = getCurrentProject();
   };
 
+  const getCurrentProjectId = () => currentProjectId;
+
   const getCurrentProject = () =>
     projectList.find((project) => project.id === currentProjectId);
 
+  const getCurrentProjectTitle = () => getCurrentProject().title;
+
   const createProject = ({ title }) => {
     projectList.push({
-      id: projectList.length,
+      id: nanoid(),
       title: `${title} ${projectList.length}`,
       taskList: [],
     });
@@ -63,8 +66,8 @@ const DBHelper = (({ JSONData }) => {
 
   const setProjectTitle = ({ projectId, projectTitle }) => {
     const index = projectList.findIndex((project) => project.id === projectId);
-
     projectList[index].title = projectTitle;
+    commit();
   };
 
   const getTaskList = () =>
@@ -80,6 +83,7 @@ const DBHelper = (({ JSONData }) => {
     getTask,
     setCurrentProjectId,
     setProjectTitle,
+    getCurrentProjectTitle,
     getCurrentProjectId,
     getCurrentProject,
     createProject,

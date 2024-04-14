@@ -24,7 +24,7 @@
                 placeholder="Task title"
                 required
               />
-              <input type="number" id="taskId" name="taskId" hidden />
+              <input type="string" id="taskId" name="taskId" hidden />
               <input
                 type="text"
                 id="desc"
@@ -34,7 +34,13 @@
 
               <input type="date" id="dueDate" name="dueDate" required />
               <div class="radio-container">
-                <input type="radio" name="priority" id="low" value="0" />
+                <input
+                  type="radio"
+                  name="priority"
+                  id="low"
+                  value="0"
+                  checked="checked"
+                />
                 <label for="low">Low</label>
                 <input type="radio" name="priority" id="med" value="1" />
                 <label for="med">Medium</label>
@@ -51,7 +57,9 @@
       </div>
     </dialog>
     <div class="sidebar">
-      <h3 class="day current-day">Monday</h3>
+      <div>
+        <input class="current-project-title" type="text" value="Default" />
+      </div>
       <button id="btn-add-task">Add Task</button>
       <button id="btn-home">Home</button>
       <ul class="project-list"></ul>

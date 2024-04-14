@@ -3,17 +3,21 @@
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+
+  background-image: url("./assets/dot-grid.svg"), url("./assets/nnnoise.svg");
+  /* background-image: url("./assets/nnnoise.svg"), url("./assets/dot-grid.svg"); */
+  background-color: #ebebeb;
+  background-blend-mode: color-dodge;
+}
+
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-
-body {
-  margin: 0;
-  background-color: lightgray;
-  display: flex;
-  height: 100vh;
 }
 
 .sidebar {
@@ -39,8 +43,9 @@ body {
   margin: 0;
 }
 
-.current-day {
+.current-project-title {
   font-size: 2rem;
+  width: 100%;
   text-align: center;
 }
 
@@ -55,23 +60,39 @@ body {
 }
 
 .card {
+  margin: 50px;
+  width: 80%;
   display: flex;
   flex-direction: column;
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
 }
 
 .due-date {
+  box-shadow: -6px 6px 0 0 white, -8px 8px 0 0 #7d7d7d;
+  padding: 12px;
   display: flex;
-  width: 85px;
-  aspect-ratio: 1;
-  text-align: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width: 85px;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.due-date > * {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.due-date h5 {
+  font-weight: 500;
 }
 
 .task-list {
   display: flex;
   flex-direction: column;
   margin-left: 85px;
+  overflow: scroll;
 }
 
 .todo-item {
@@ -91,7 +112,7 @@ body {
   width: 100%;
   cursor: pointer;
   border: none;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .todo-item input {
