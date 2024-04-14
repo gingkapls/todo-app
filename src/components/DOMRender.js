@@ -66,7 +66,6 @@ const DOMRender = class {
     const btnsubmit = this.dialogAddTask.querySelector("#btn-submit-task");
     const btnClose = this.dialogAddTask.querySelector("#btn-close");
     btnClose.addEventListener("click", () => {
-      // this.dialogAddTask.close();
       FormHelper.closeForm();
     });
 
@@ -83,15 +82,6 @@ const DOMRender = class {
         task: newTask,
       });
 
-      FormHelper.reset();
-
-      // console.log(DBHelper.getCurrentProject());
-      // console.log(DBHelper.getCurrentProjectId());
-      // console.log(DBHelper.getTaskList());
-      // console.log(DBHelper.getAllTasks());
-
-      // this.formAddTask.reset();
-      // FormHelper.reset();
       FormHelper.closeForm();
 
       if (this.isAtHome) {
@@ -110,7 +100,7 @@ const DOMRender = class {
     const check = document.createElement("input");
     check.setAttribute("type", "checkbox");
     item.appendChild(check);
-    item.classList.add("btn");
+    item.classList.add("todo-item");
 
     const button = document.createElement("button");
     button.textContent = `${task.title}`;

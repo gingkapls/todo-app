@@ -8,45 +8,45 @@
     <dialog class="dialog-add-task">
       <div class="flex-container">
         <form class="form-add-task" action="#">
-          <button id="btn-close" type="button">x</button>
-          <table>
-            <tbody>
-              <tr>
-                <td><label for="title">Title</label></td>
-                <td>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Task title"
-                    required
-                  />
-                </td>
-              </tr>
+          <button class="btn" id="btn-close" type="button">x</button>
+          <div class="side-parent">
+            <div class="left-side">
+              <label for="title">Title</label>
+              <label for="desc">Description</label>
+              <label for="dueDate">Due Date</label>
+              <label for="priority">Priority</label>
+            </div>
+            <div class="right-side">
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Task title"
+                required
+              />
               <input type="number" id="taskId" name="taskId" hidden />
+              <input
+                type="text"
+                id="desc"
+                name="desc"
+                placeholder="Task description"
+              />
 
-              <tr>
-                <td><label for="desc">Description</label></td>
-                <td>
-                  <input
-                    type="text"
-                    id="desc"
-                    name="desc"
-                    placeholder="Task description"
-                  />
-                </td>
-              </tr>
+              <input type="date" id="dueDate" name="dueDate" required />
+              <div class="radio-container">
+                <input type="radio" name="priority" id="low" value="0" />
+                <label for="low">Low</label>
+                <input type="radio" name="priority" id="med" value="1" />
+                <label for="med">Medium</label>
+                <input type="radio" name="priority" id="high" value="2" />
+                <label for="high">High</label>
+              </div>
+            </div>
+          </div>
 
-              <tr>
-                <td><label for="dueDate">Due Date</label></td>
-                <td>
-                  <input type="date" id="dueDate" name="dueDate" required />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button id="btn-submit-task" type="submit">Add task</button>
+          <button class="btn" id="btn-submit-task" type="submit">
+            Add task
+          </button>
         </form>
       </div>
     </dialog>
