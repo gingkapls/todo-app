@@ -185,7 +185,6 @@ ul {
   font-weight: 700;
   font-size: 1rem;
   margin-left: 100px;
-  overflow: scroll;
 }
 
 .todo-item {
