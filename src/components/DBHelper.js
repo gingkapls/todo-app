@@ -2,9 +2,27 @@ import JSONData from "../data.json";
 import Task from "./Task";
 
 const DBHelper = (({ JSONData }) => {
-  // Convert JSON to POJOs
-  const projectList = JSONData.projects.map((project) => project);
-  const taskList = JSONData.taskList.map((task) => new Task(task));
+  const populateStorage = () => {
+    const projectList = JSONData.projects.map((project) => project);
+    const taskList = JSONData.taskList.map((task) => task);
+
+    localStorage.setItem("projectList", JSON.stringify(projectList));
+    localStorage.setItem("taskList", JSON.stringify(taskList));
+  };
+
+  if (!localStorage.getItem("projectList")) {
+    populateStorage();
+  }
+  // localStorage.clear();
+  const projectList = JSON.parse(localStorage.getItem("projectList"));
+  const taskList = JSON.parse(localStorage.getItem("taskList")).map(
+    (task) => new Task(task)
+  );
+
+  const commit = () => {
+    localStorage.setItem("projectList", JSON.stringify(projectList));
+    localStorage.setItem("taskList", JSON.stringify(taskList));
+  };
 
   const getProjectList = () => projectList;
 
@@ -24,6 +42,8 @@ const DBHelper = (({ JSONData }) => {
       title: `${title} ${projectList.length}`,
       taskList: [],
     });
+
+    commit();
   };
 
   const getTask = ({ taskId }) => taskList.find((task) => task.id === taskId);
@@ -34,6 +54,8 @@ const DBHelper = (({ JSONData }) => {
     taskList[index] = task;
 
     sortTasks();
+
+    commit();
     return index;
   };
 
