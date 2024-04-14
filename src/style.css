@@ -263,7 +263,7 @@ ul {
   .btn-delete-task:hover,
   .sidebar > button:hover,
   .project-list > li:hover {
-    transform: translateX(15%);
+    transform: translateX(25px);
   }
 
   .btn-delete-task,
@@ -273,7 +273,7 @@ ul {
   }
 
   .todo-item input:hover + button {
-    transform: translateX(5%);
+    transform: translateX(10px);
   }
 }
 
