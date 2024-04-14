@@ -1,16 +1,23 @@
 * {
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
   box-sizing: border-box;
+}
+
+@media (width < 820px) {
+  .rest-container {
+    display: none;
+  }
 }
 
 body {
   margin: 0;
   display: flex;
   height: 100vh;
+  width: 100%;
 
   background-image: url("./assets/dot-grid.svg"), url("./assets/nnnoise.svg");
   /* background-image: url("./assets/nnnoise.svg"), url("./assets/dot-grid.svg"); */
-  background-color: #ebebeb;
+  background-color: #f2f1f1;
   background-blend-mode: color-dodge;
 }
 
@@ -22,31 +29,102 @@ ul {
 
 .sidebar {
   height: 100%;
-  width: min(220px, 30%);
-  padding: 20px;
-  background-color: lightblue;
+  flex-shrink: 0;
+  margin-left: 20px;
+  width: min(30%, 220px);
+  padding: 10px;
+  /* background: linear-gradient(to right, rgba(248, 233, 61, 0.5), transparent); */
   display: flex;
   flex-direction: column;
+}
+
+.sidebar > button {
+  background-color: lightskyblue;
+  cursor: pointer;
+  border: 4px outset lightskyblue;
+  border-radius: 8px;
+  padding: 2px 8px;
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+.sidebar > button:active {
+  border: 4px inset lightskyblue;
 }
 
 .project-list {
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 
 .project-list li {
-  margin: 14px 0;
+  display: flex;
+  background-color: lightcoral;
+  border: 4px outset lightcoral;
+  border-radius: 8px;
+  margin-bottom: 18px;
 }
 
-.project-list button {
+.project-list li:first-child .btn-delete-project {
+  display: none;
+}
+
+.project-list li:active {
+  border: 4px inset lightcoral;
+}
+
+.project-list button,
+#btn-home {
+  background-color: lightcoral;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+#btn-home {
+  border: 4px outset lightcoral;
+  margin: 18px 0px;
+}
+
+#btn-home:active {
+  border: 4px inset lightcoral;
+}
+
+.project-list button:first-child {
+  cursor: pointer;
   width: 100%;
   margin: 0;
 }
 
+.project-list .btn-delete-project {
+  cursor: pointer;
+  margin-left: 10px;
+  position: absolute;
+  right: 5%;
+}
+
 .current-project-title {
+  background-color: transparent;
+  box-shadow: -6px 6px 0 0 white, -8px 8px 0 0 #7d7d7d;
+  border: 1px solid black;
   font-size: 2rem;
+  padding: 4px 0;
+  font-weight: 700;
   width: 100%;
   text-align: center;
+  margin: 30px 0;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
+
+.current-project-title:hover,
+.current-project-title:focus {
+  color: white;
+  background-color: lightcoral;
 }
 
 .main-content {
@@ -61,14 +139,27 @@ ul {
 
 .card {
   margin: 50px;
+  margin-bottom: 120px;
   width: 80%;
   display: flex;
   flex-direction: column;
-  /* background-color: lightgreen; */
+  background-color: transparent;
+}
+
+.date-flex-parent {
+  display: flex;
+  align-items: flex-start;
+}
+
+.due-day {
+  margin: 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .due-date {
   box-shadow: -6px 6px 0 0 white, -8px 8px 0 0 #7d7d7d;
+  border: 1px solid black;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -91,16 +182,27 @@ ul {
 .task-list {
   display: flex;
   flex-direction: column;
-  margin-left: 85px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-left: 100px;
   overflow: scroll;
 }
 
 .todo-item {
-  background-color: white;
+  background-color: transparent;
   border-radius: 4px;
   display: flex;
   margin: 4px;
   justify-content: space-between;
+  align-items: center;
+}
+
+.task-list li:not(.todo-item) {
+  margin-left: 10px;
+}
+
+.todo-item:hover input:not(:checked) + button:nth-child(2) {
+  color: lightcoral;
 }
 
 .todo-item > * {
@@ -109,19 +211,24 @@ ul {
 
 .todo-item button {
   background: transparent;
+  font-size: 1rem;
+  text-align: start;
   width: 100%;
   cursor: pointer;
   border: none;
-  font-weight: 500;
+  font-weight: 700;
+  text-decoration: line-through transparent;
+  transition: all 225ms ease-in-out;
 }
 
 .todo-item input {
-  color: blue;
+  flex-shrink: 0;
+  color: black;
   border: 1px solid currentColor;
   border-radius: 100%;
   appearance: none;
   width: 1.2rem;
-  height: 1rem;
+  height: 1.2rem;
 }
 
 .todo-item input:hover,
@@ -132,13 +239,50 @@ ul {
 }
 
 .todo-item input:checked + button {
-  text-decoration: line-through;
+  /* text-decoration: line-through; */
+  text-decoration-color: currentColor;
+  color: grey;
+  background-color: transparent;
+}
+
+.todo-item .btn-delete-task {
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0 10px;
+  width: 1.5rem;
+  width: 1.5rem;
+  background-color: lightskyblue;
+  border: 4px outset lightskyblue;
+}
+
+.btn-delete-task:active {
+  border: 4px inset lightskyblue;
+}
+
+@media not (prefers-reduced-motion) {
+  .btn-delete-task:hover,
+  .sidebar > button:hover,
+  .project-list > li:hover {
+    transform: translateX(15%);
+  }
+
+  .btn-delete-task,
+  .sidebar > button,
+  .project-list > li {
+    transition: transform 225ms ease-in-out;
+  }
+
+  .todo-item input:hover + button {
+    transform: translateX(5%);
+  }
 }
 
 .dialog-add-task {
   width: 100%;
   height: 100%;
   backdrop-filter: blur(10px);
+  border: none;
   background: transparent;
 }
 
@@ -154,12 +298,12 @@ ul {
 .form-add-task {
   display: flex;
   flex-direction: column;
+  border: 6px outset white;
   justify-content: center;
   align-items: center;
   background-color: white;
-  width: auto;
-  aspect-ratio: 1;
-  height: 220px;
+  width: min(420px, 50%);
+  height: min(280px, 50);
   border-radius: 12px;
   padding: 10px 20px;
 }
@@ -175,10 +319,34 @@ ul {
   margin: 0 8px;
 }
 
+.side-parent .left-side {
+  font-weight: 700;
+}
+
+.form-add-task input {
+  border: none;
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.form-add-task button {
+  border: 4px outset lightskyblue;
+  transition: transform 225ms ease-in-out;
+}
+
+.form-add-task button:active {
+  border: 4px inset lightskyblue;
+}
+
+.form-add-task button:hover {
+  transform: scale(1.05);
+}
+
 #btn-submit-task {
   margin-top: 20px;
   width: 40%;
   align-self: flex-end;
+  cursor: pointer;
 }
 
 #btn-close {
@@ -188,7 +356,7 @@ ul {
 }
 
 .btn {
-  background-color: lightseagreen;
+  background-color: lightskyblue;
   border: none;
   font-weight: 700;
   text-align: center;
@@ -219,7 +387,7 @@ input#low {
   color: lightgreen;
 }
 input#med {
-  color: lightblue;
+  color: #ffd701;
 }
 input#high {
   color: red;
@@ -231,8 +399,13 @@ input[type="radio"] {
   width: 1.1rem;
   border-radius: 100%;
   border: 4px solid currentColor;
+  transition: box-shadow 225ms ease-in-out, background-color 225ms ease-in-out;
 }
 
 input[type="radio"]:checked {
   background-color: currentColor;
+}
+
+input[type="radio"]:hover {
+  box-shadow: 1px 1px 5px 0 currentColor;
 }

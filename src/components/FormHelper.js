@@ -50,7 +50,7 @@ const FormHelper = (({ form, dialog, btnSubmit, btnClose }) => {
     form.title.value = task.title;
     form.desc.value = task.desc;
     form.taskId.value = task.id;
-    console.log("formdata", form.taskId.value);
+    // console.log("formdata", form.taskId.value);
     form.priority.value = task.priority;
     form.dueDate.value = format(new Date(task.dueDate), "yyyy-MM-dd");
   };

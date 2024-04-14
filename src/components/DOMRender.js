@@ -1,7 +1,6 @@
 import TaskFilter from "./TaskFilter";
 import DBHelper from "./DBHelper";
 import FormHelper from "./FormHelper";
-import Task from "./Task";
 import { format, addDays } from "date-fns";
 
 const DOMRender = class {
@@ -17,10 +16,7 @@ const DOMRender = class {
     this.isAtHome = true;
     this.btnHome = document.querySelector("#btn-home");
 
-    // this.dialogAddTask.show();
-    // console.log(DBHelper.getAllTasks());
-
-    this.displayProject({ id: "0" });
+    this.renderHome();
     this.displayProjectList();
     this.addProjectEventListener();
     this.addTaskEventListener();
@@ -40,7 +36,9 @@ const DOMRender = class {
   addProjectEventListener = () => {
     const btn = document.querySelector("#btn-add-project");
     btn.addEventListener("click", () => {
-      DBHelper.createProject({ title: "Test" });
+      DBHelper.createProject({
+        title: `Project ${DBHelper.getProjectList().length}`,
+      });
       this.displayProjectList();
     });
   };
@@ -69,9 +67,16 @@ const DOMRender = class {
 
   renderHome = () => {
     this.isAtHome = true;
+    DBHelper.setCurrentProjectId({ id: DBHelper.getDefaultProject().id });
+    this.hideTitleInput();
     this.hideRestContainer();
     this.todayContainer.replaceChildren(this.generateTodoList({ dueDate: 0 }));
   };
+  hideTitleInput = () =>
+    (this.currentProjectTitleInput.style.visibility = "collapse");
+
+  showTitleInput = () =>
+    (this.currentProjectTitleInput.style.visibility = "unset");
 
   hideRestContainer = () => (this.restContainer.style.visibility = "collapse");
 
@@ -111,16 +116,39 @@ const DOMRender = class {
     const item = document.createElement("li");
     item.dataset.projectId = DBHelper.getCurrentProjectId();
     item.dataset.taskId = task.id;
+    item.classList.add("todo-item");
 
     const check = document.createElement("input");
     check.setAttribute("type", "checkbox");
+    if (task.completed) {
+      check.setAttribute("checked", "checked");
+    }
+
+    check.addEventListener("click", () => {
+      task.toggle();
+      DBHelper.commit();
+    });
     item.appendChild(check);
-    item.classList.add("todo-item");
 
     const button = document.createElement("button");
     button.textContent = `${task.title}`;
     button.addEventListener("click", FormHelper.editTaskData);
     item.appendChild(button);
+
+    const delButton = document.createElement("button");
+    delButton.textContent = "X";
+    delButton.classList.add("btn-delete", "btn-delete-task");
+    delButton.addEventListener("click", () => {
+      DBHelper.deleteTask({ taskId: task.id });
+
+      if (this.isAtHome) {
+        this.renderHome();
+      } else {
+        this.displayProject({ id: DBHelper.getCurrentProjectId() });
+      }
+    });
+
+    item.appendChild(delButton);
 
     return item;
   };
@@ -130,10 +158,10 @@ const DOMRender = class {
     card.classList.add("card");
 
     const dateContainer = document.createElement("div");
-    const [month, date] = (
+    const [month, date, day] = (
       dueDate === 0
-        ? format(new Date(), "MMM dd")
-        : format(new Date(dueDate), "MMM dd")
+        ? format(new Date(), "MMM dd EEEE")
+        : format(new Date(dueDate), "MMM dd EEEE")
     ).split(" ");
 
     const monthEl = document.createElement("h4");
@@ -142,8 +170,17 @@ const DOMRender = class {
     const dateEl = document.createElement("h5");
     dateEl.textContent = date;
 
+    const flexContainer = document.createElement("div");
+    flexContainer.classList.add("date-flex-parent");
+
     dateContainer.classList.add("due-date");
     dateContainer.replaceChildren(monthEl, dateEl);
+
+    const dayContainer = document.createElement("h5");
+    dayContainer.classList.add("due-day");
+    dayContainer.textContent = day;
+
+    flexContainer.replaceChildren(dateContainer, dayContainer);
 
     const taskList = document.createElement("ul");
     taskList.classList.add("task-list");
@@ -170,7 +207,7 @@ const DOMRender = class {
       taskList.appendChild(item);
     }
 
-    card.appendChild(dateContainer);
+    card.appendChild(flexContainer);
     card.appendChild(taskList);
 
     return card;
@@ -198,7 +235,8 @@ const DOMRender = class {
 
   displayProject = ({ id }) => {
     this.updateProject({ id });
-    this.currentProjectTitleInput.value = DBHelper.getCurrentProjectTitle();
+    this.showTitleInput();
+    this.currentProjectTitleInput.value = DBHelper.getCurrentProject().title;
     this.#displayTodayTasks();
     this.#displayRestTasks();
   };
@@ -223,6 +261,28 @@ const DOMRender = class {
       });
 
       li.appendChild(button);
+
+      const delButton = document.createElement("button");
+      delButton.textContent = "X";
+      delButton.classList.add("btn-delete", "btn-delete-project");
+      delButton.addEventListener("click", () => {
+        if (
+          DBHelper.getTaskList().filter((task) => task.projectId === id)
+            .length !== 0 &&
+          !confirm(
+            `Do you want to delete the project ${title} and all its tasks?`
+          )
+        ) {
+          return;
+        }
+
+        DBHelper.deleteProject({ projectId: id });
+        this.renderHome();
+        this.displayProjectList();
+      });
+
+      li.appendChild(delButton);
+
       fragment.appendChild(li);
     });
 

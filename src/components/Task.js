@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-
 const Task = class {
   constructor({
     id,
