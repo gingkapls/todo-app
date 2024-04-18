@@ -260,13 +260,19 @@ ul {
 }
 
 @media not (prefers-reduced-motion) {
-  .btn-delete-task:hover,
   .sidebar > button:hover,
   .project-list > li:hover {
     transform: translateX(25px);
   }
+  
+  .btn-delete-task:hover {
+    transform: scale(1.20);
+  }
+  
+  .btn-delete-task {
+    transition: transform 150ms ease-in-out;
+  }
 
-  .btn-delete-task,
   .sidebar > button,
   .project-list > li {
     transition: transform 225ms ease-in-out;
